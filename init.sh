@@ -6,7 +6,7 @@ INFRASTRUCTURE_REPO="git@github.com:lostcities-cloud/lostcities-infrastructure.g
 COMMON_REPO="git@github.com:lostcities-cloud/lostcities-common.git"
 EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 
-mkdir "$WORKSPACE"
+mkdir -p "$WORKSPACE"
 
 cd "$WORKSPACE" || exit
 
