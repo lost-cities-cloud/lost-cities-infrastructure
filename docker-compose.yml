@@ -18,11 +18,31 @@ services:
     build:
       context: ../lostcities-web-experience
     working_dir: /lost-cities
-    command: bash -c "chmod 777 ./gradlew && ./gradlew bootRun"
+    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
     ports:
-      - "8080:8080"
+      - "8081:8080"
     volumes:
       - ../lostcities-web-experience:/lost-cities
+      - ../lostcities-common:/lostcities-common
+  accounts:
+    build:
+      context: ../lostcities-accounts
+    working_dir: /accounts
+    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ../lostcities-web-experience:/accounts
+      - ../lostcities-common:/lostcities-common
+  matches:
+    build:
+      context: ../lostcities-matches
+    working_dir: /matches
+    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
+    ports:
+      - "8083:8080"
+    volumes:
+      - ../lostcities-matches:/matches
       - ../lostcities-common:/lostcities-common
     depends_on:
       - kafka
