@@ -10,6 +10,9 @@ services:
     #  - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "80:80"
+    depends_on:
+      - accounts
+      - matches
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
@@ -51,7 +54,8 @@ services:
       POSTGRES_USER: accounts
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-accounts
-
+    ports:
+      - "5432:5432"
   matches:
     build:
       context: ../lostcities-matches
