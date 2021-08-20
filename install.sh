@@ -39,6 +39,7 @@ chmod u+x,g+x ./bin/lostcities.sh
 if test -f "$USER_BASHRC"; then
   echo "export PATH=\$PATH:${LOSTCITIES_BIN_DIR}" >> "${USER_BASHRC}"
   echo "alias lostcities='lostcities.sh'" >> "${USER_BASHRC}"
+  echo "alias lsc='lostcities.sh'" >> "${USER_BASHRC}"
 else
   touch "${USER_BASHRC}"
   echo "export PATH=\$PATH:${LOSTCITIES_BIN_DIR}" >> "${USER_BASHRC}"
