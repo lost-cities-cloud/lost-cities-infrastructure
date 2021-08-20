@@ -41,7 +41,7 @@ services:
     build:
       context: ../lostcities-accounts
     working_dir: /accounts
-    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun"
+    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=${PROFILE} ./gradlew bootRun"
     volumes:
       - ../lostcities-accounts:/accounts
       - ../lostcities-common:/lostcities-common
@@ -54,13 +54,14 @@ services:
       POSTGRES_USER: accounts
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-accounts
+      PGDATA: /var/lib/postgresql/data/accounts
     ports:
       - "5432:5432"
   matches:
     build:
       context: ../lostcities-matches
     working_dir: /matches
-    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun"
+    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=${PROFILE} ./gradlew bootRun"
     volumes:
       - ../lostcities-matches:/matches
       - ../lostcities-common:/lostcities-common
@@ -74,6 +75,7 @@ services:
       POSTGRES_USER: matches
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
+      PGDATA: /var/lib/postgresql/data/accounts
 #  lostcities-command-processor:
 #    build:
 #      context: ../lost-cities-command-processor
