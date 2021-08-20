@@ -26,7 +26,7 @@ if [[ ! -d "./lostcities-matches" ]]; then
   git clone $MATCHES_REPO
 fi
 
-if [[ ! -d "./lostcities-matches" ]]; then
+if [[ ! -d "./lostcities-common" ]]; then
   git clone $COMMON_REPO
 fi
 
@@ -48,3 +48,4 @@ fi
 
 export PATH=$PATH:${LOSTCITIES_BIN_DIR}
 alias lostcities='lostcities.sh'
+alias lsc='lostcities.sh'

@@ -63,7 +63,7 @@ function cloneRepos() {
     git clone $MATCHES_REPO
   fi
 
-  if [[ ! -d "./lostcities-matches" ]]; then
+  if [[ ! -d "./lostcities-common" ]]; then
     git clone $COMMON_REPO
   fi
 }
