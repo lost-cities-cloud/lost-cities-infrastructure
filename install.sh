@@ -10,9 +10,6 @@ ACCOUNTS_REPO="git@github.com:lostcities-cloud/lostcities-accounts.git"
 MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
 EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 
-
-
-
 mkdir -p "$WORKSPACE"
 
 cd "$WORKSPACE" || exit
@@ -46,6 +43,7 @@ else
   touch "${USER_BASHRC}"
   echo "export PATH=\$PATH:${LOSTCITIES_BIN_DIR}" >> "${USER_BASHRC}"
   echo "alias lostcities='lostcities.sh'" >> "${USER_BASHRC}"
+  echo "alias lsc='lostcities.sh'" >> "${USER_BASHRC}"
 fi
 
 export PATH=$PATH:${LOSTCITIES_BIN_DIR}
