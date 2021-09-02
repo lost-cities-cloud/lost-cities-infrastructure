@@ -13,6 +13,7 @@ services:
     depends_on:
       - accounts
       - matches
+      - frontend
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
@@ -74,13 +75,16 @@ services:
     environment:
       POSTGRES_USER: matches
       POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-matches
+      POSTGRES_DB: lostcities-matchesAdding clone for frontend.
       PGDATA: /var/lib/postgresql/data/accounts
   frontend:
+    container_name: frontend
     build:
       context: ../lostcities-frontend
     volumes:
       - ../lostcities-frontend:/usr/src/lostcities
+    expose:
+      - 8080
 
 #  lostcities-command-processor:
 #    build:
