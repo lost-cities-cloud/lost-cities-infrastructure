@@ -76,6 +76,12 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
       PGDATA: /var/lib/postgresql/data/accounts
+  frontend:
+    build:
+      context: ../lostcities-frontend
+    volumes:
+      - ../lostcities-frontend:/usr/src/lostcities
+
 #  lostcities-command-processor:
 #    build:
 #      context: ../lost-cities-command-processor
