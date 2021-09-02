@@ -2,12 +2,13 @@
 
 WORKSPACE="${HOME}/Workspace"
 LOSTCITIES_BIN_DIR="${WORKSPACE}/lostcities-infrastructure/bin"
-USER_BASHRC="${HOME}/.bashrc"
+USER_BASHRC="${HOME}/.zshrc"
 
 INFRASTRUCTURE_REPO="git@github.com:lostcities-cloud/lostcities-infrastructure.git"
 COMMON_REPO="git@github.com:lostcities-cloud/lostcities-common.git"
 ACCOUNTS_REPO="git@github.com:lostcities-cloud/lostcities-accounts.git"
 MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
+FRONTEND_REPO="git@github.com:lostcities-cloud/lostcities-frontend.git"
 EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 
 mkdir -p "$WORKSPACE"
@@ -24,6 +25,10 @@ fi
 
 if [[ ! -d "./lostcities-matches" ]]; then
   git clone $MATCHES_REPO
+fi
+
+if [[ ! -d "./lostcities-frontend" ]]; then
+    git clone $FRONTEND_REPO
 fi
 
 if [[ ! -d "./lostcities-common" ]]; then

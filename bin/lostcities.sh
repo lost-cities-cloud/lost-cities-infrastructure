@@ -7,6 +7,7 @@ INFRASTRUCTURE_REPO="git@github.com:lostcities-cloud/lostcities-infrastructure.g
 COMMON_REPO="git@github.com:lostcities-cloud/lostcities-common.git"
 ACCOUNTS_REPO="git@github.com:lostcities-cloud/lostcities-accounts.git"
 MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
+FRONTEND_REPO="git@github.com:lostcities-cloud/lostcities-frontend.git"
 EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 ENV="dev"
 
@@ -61,6 +62,10 @@ function cloneRepos() {
 
   if [[ ! -d "./lostcities-matches" ]]; then
     git clone $MATCHES_REPO
+  fi
+
+  if [[ ! -d "./lostcities-frontend" ]]; then
+      git clone $FRONTEND_REPO
   fi
 
   if [[ ! -d "./lostcities-common" ]]; then
