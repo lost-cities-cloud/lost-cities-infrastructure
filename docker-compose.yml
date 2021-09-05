@@ -28,21 +28,15 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  # lostcities-web-experience:
-  #   build:
-  #     context: ../lostcities-web-experience
-  #   working_dir: /lost-cities
-  #   command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
-  #   ports:
-  #     - "8081:8080"
-  #   volumes:
-  #     - ../lostcities-web-experience:/lost-cities
-  #     - ../lostcities-common:/lostcities-common
   accounts:
     build:
       context: ../lostcities-accounts
     working_dir: /accounts
-    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=${PROFILE} ./gradlew bootRun"
+    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
+    environment:
+      GRADLE_USER_HOME: /var/lib/gradle
+      GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
+      SPRING_PROFILES_ACTIVE: ${PROFILE}
     volumes:
       - ../lostcities-accounts:/accounts
       - ../lostcities-common:/lostcities-common
@@ -62,7 +56,11 @@ services:
     build:
       context: ../lostcities-matches
     working_dir: /matches
-    command: bash -c "chmod +x ./gradlew && SPRING_PROFILES_ACTIVE=${PROFILE} ./gradlew bootRun"
+    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
+    environment:
+      GRADLE_USER_HOME: /var/lib/gradle
+      GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
+      SPRING_PROFILES_ACTIVE: ${PROFILE}
     volumes:
       - ../lostcities-matches:/matches
       - ../lostcities-common:/lostcities-common
@@ -75,7 +73,7 @@ services:
     environment:
       POSTGRES_USER: matches
       POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-matchesAdding clone for frontend.
+      POSTGRES_DB: lostcities-matches
       PGDATA: /var/lib/postgresql/data/accounts
   frontend:
     container_name: frontend

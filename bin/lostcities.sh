@@ -25,7 +25,10 @@ function help() {
    echo " "
    echo "up "
    echo "down "
-   echo "clean "
+   echo "cleanJava "
+   echo "cleanDocker "
+   echo "cleanDatabases "
+   echo "cleanAll "
    exit
 }
 
@@ -41,8 +44,18 @@ function build() {
   sudo docker-compose --env-file environments/.env.${ENV} build
 }
 
-function clean() {
+function cleanDocker() {
   sudo docker system prune -a
+}
+
+function cleanJava() {
+  clean_command="./gradlew clean; rm -rf .gradle"
+  sudo bash -c "cd ../lostcities-accounts/; ${clean_command}"
+  sudo bash -c "cd ../lostcities-matches/; ${clean_command}"
+}
+
+function cleanDatabases() {
+  sudo rm -rf /var/lib/postgresql
 }
 
 function logs() {
@@ -89,7 +102,10 @@ for var in "$@"; do
       (up) up;;
       (down) down;;
       (build) build;;
-      (clean) clean;;
+      (cleanJava) cleanJava;;
+      (cleanDocker) cleanDocker;;
+      (cleanDatabases) cleanDatabases;;
+      (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
       (cloneRepos) cloneRepos;;
     esac
 done
