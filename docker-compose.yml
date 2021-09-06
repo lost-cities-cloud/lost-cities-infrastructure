@@ -32,10 +32,7 @@ services:
     build:
       context: ../lostcities-accounts
     working_dir: /accounts
-    command: gradle bootRun --no-daemon
     environment:
-      GITHUB_ACTOR: ${GITHUB_ACTOR}
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
       GRADLE_USER_HOME: /var/lib/gradle
       GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
       SPRING_PROFILES_ACTIVE: ${PROFILE}
@@ -58,7 +55,6 @@ services:
     build:
       context: ../lostcities-matches
     working_dir: /matches
-    command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
     environment:
       GRADLE_USER_HOME: /var/lib/gradle
       GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
