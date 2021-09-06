@@ -60,8 +60,6 @@ services:
     working_dir: /matches
     command: bash -c "chmod +x ./gradlew && ./gradlew bootRun"
     environment:
-      GITHUB_ACTOR: ${GITHUB_ACTOR}
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
       GRADLE_USER_HOME: /var/lib/gradle
       GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
       SPRING_PROFILES_ACTIVE: ${PROFILE}

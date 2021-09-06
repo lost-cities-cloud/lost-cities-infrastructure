@@ -10,6 +10,8 @@ MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
 FRONTEND_REPO="git@github.com:lostcities-cloud/lostcities-frontend.git"
 EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 ENV="dev"
+LOCAL_GITHUB_ACTOR=${GITHUB_ACTOR}
+LOCAL_GITHUB_TOKEN=${GITHUB_TOKEN}
 
 workspaceRootError="Unable to find WORKSPACE_ROOT"
 
@@ -43,7 +45,9 @@ function down() {
 }
 
 function build() {
-  sudo docker-compose --env-file environments/.env.${ENV} build
+  sudo docker-compose --env-file environments/.env.${ENV} build \
+    --build-arg actor="${LOCAL_GITHUB_ACTOR}" \
+    --build-arg token="${LOCAL_GITHUB_TOKEN}"
 }
 
 function cleanDocker() {
