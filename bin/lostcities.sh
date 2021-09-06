@@ -25,6 +25,8 @@ function help() {
    echo " "
    echo "up "
    echo "down "
+
+   echo "publishCommon "
    echo "cleanJava "
    echo "cleanDocker "
    echo "cleanDatabases "
@@ -45,7 +47,7 @@ function build() {
 }
 
 function cleanDocker() {
-  sudo docker system prune -a
+  docker system prune -a
 }
 
 function cleanJava() {
@@ -56,6 +58,10 @@ function cleanJava() {
 
 function cleanDatabases() {
   sudo rm -rf /var/lib/postgresql
+}
+
+function publishCommon() {
+  bash -c "cd ../lostcities-common/; ./gradlew clean build publish"
 }
 
 function logs() {
@@ -102,6 +108,7 @@ for var in "$@"; do
       (up) up;;
       (down) down;;
       (build) build;;
+      (publishCommon) publishCommon;;
       (cleanJava) cleanJava;;
       (cleanDocker) cleanDocker;;
       (cleanDatabases) cleanDatabases;;
