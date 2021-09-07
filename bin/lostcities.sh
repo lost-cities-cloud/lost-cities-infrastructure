@@ -45,7 +45,7 @@ function down() {
 }
 
 function build() {
-  sudo docker-compose --env-file environments/.env.${ENV} build \
+  sudo docker-compose --env-file environments/.env.${ENV} build --parallel \
     --build-arg actor="${LOCAL_GITHUB_ACTOR}" \
     --build-arg token="${LOCAL_GITHUB_TOKEN}"
 }

@@ -79,8 +79,8 @@ services:
       context: ../lostcities-frontend
     volumes:
       - ../lostcities-frontend:/usr/src/lostcities
-    expose:
-      - 8080
+
+
 
 #  lostcities-command-processor:
 #    build:
