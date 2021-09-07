@@ -14,20 +14,12 @@ services:
       - accounts
       - matches
       - frontend
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
-  kafka:
-    image: wurstmeister/kafka
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafka
-      KAFKA_CREATE_TOPICS: "create-game-topic:1:1" #,command-job-topic:1:1,game-change-notification-topic:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  frontend:
+    container_name: frontend
+    build:
+      context: ../lostcities-frontend
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ../lostcities-frontend:/usr/src/lostcities
   accounts:
     build:
       context: ../lostcities-accounts
@@ -41,16 +33,6 @@ services:
       - ../lostcities-common:/lostcities-common
     depends_on:
       - accounts-database
-  accounts-database:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: accounts
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-accounts
-      PGDATA: /var/lib/postgresql/data/accounts
-    ports:
-      - "5432:5432"
   matches:
     build:
       context: ../lostcities-matches
@@ -65,6 +47,16 @@ services:
     depends_on:
       - kafka
       - accounts-database
+  accounts-database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: accounts
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: lostcities-accounts
+      PGDATA: /var/lib/postgresql/data/accounts
+    ports:
+      - "5432:5432"
   matches-database:
     image: postgres
     restart: always
@@ -73,13 +65,20 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
       PGDATA: /var/lib/postgresql/data/accounts
-  frontend:
-    container_name: frontend
-    build:
-      context: ../lostcities-frontend
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: "create-game-topic:1:1" #,command-job-topic:1:1,game-change-notification-topic:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
-      - ../lostcities-frontend:/usr/src/lostcities
-
+      - /var/run/docker.sock:/var/run/docker.sock
 
 
 #  lostcities-command-processor:
