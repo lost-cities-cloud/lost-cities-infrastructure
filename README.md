@@ -16,19 +16,19 @@ lsc down build up
   * [ ] Smarter automatic matchmaking
   * [ ] Calculate elo on match completion
 * Processing commands
-  * Command Processor Queue
-  * Command Processor Listener
-  * Add game completion Queue
+  * [ ] Command Processor Queue
+  * [ ] Command Processor Listener
+  * [ ] Add game completion Queue
 * Gamestate Service
-  * Recieve gamestate from command processor
-  * Store in Mongo
-  * Expose debug ViewModel
-  * Expose player ViewModel
+  * [ ] Recieve gamestate from command processor
+  * [ ] Store in Mongo
+  * [ ] Expose debug ViewModel
+  * [ ] Expose player ViewModel
 
 * Debug game ui
-  * Simple ui for showing gamestate
-  * Add game actions to debug ui
+  * [ ] Simple ui for showing gamestate
+  * [ ] Add game actions to debug ui
 * Official game ui
-  * Draw hand
-  * Draw deck
-  * Draw my play area
+  * [ ] Draw hand
+  * [ ] Draw deck
+  * [ ] Draw my play area
