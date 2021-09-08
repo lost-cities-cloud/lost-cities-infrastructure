@@ -5,3 +5,30 @@ Before publishing `lostcities-common` you need to add `GITHUB_ACTOR` and `GITHUB
 bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-infrastructure/master/install.sh)
 lsc down build up
 ```
+
+* Authentication
+  * [x] Support JWT on backend
+  * [x] Create front end for registration
+  * [x] Create front end for login
+  * [x] Simple JWT store on frontend
+* Matchmaking
+  * [x] Write simple manual matchmaking
+  * [ ] Smarter automatic matchmaking
+  * [ ] Calculate elo on match completion
+* Processing commands
+  * Command Processor Queue
+  * Command Processor Listener
+  * Add game completion Queue
+* Gamestate Service
+  * Recieve gamestate from command processor
+  * Store in Mongo
+  * Expose debug ViewModel
+  * Expose player ViewModel
+
+* Debug game ui
+  * Simple ui for showing gamestate
+  * Add game actions to debug ui
+* Official game ui
+  * Draw hand
+  * Draw deck
+  * Draw my play area
