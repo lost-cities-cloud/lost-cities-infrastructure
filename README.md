@@ -6,13 +6,19 @@ bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-inf
 lsc down build up
 ```
 
+* Development Environment
+  * [ ] Expose debugging locally
+* Production
+  * [ ] Create Build Pack images for java
+  * [ ] Figure out build strategy for Vue  
+
 * Authentication
   * [x] Support JWT on backend
   * [x] Create front end for registration
   * [x] Create front end for login
   * [x] Simple JWT store on frontend
 * Matchmaking
-  * [x] Write simple manual matchmaking
+  * [ ] Write simple manual matchmaking
   * [ ] Smarter automatic matchmaking
   * [ ] Calculate elo on match completion
 * Processing commands
