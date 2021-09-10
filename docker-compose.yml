@@ -39,8 +39,10 @@ services:
     working_dir: /matches
     environment:
       GRADLE_USER_HOME: /var/lib/gradle
-      GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
+      GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
       SPRING_PROFILES_ACTIVE: ${PROFILE}
+    expose:
+      - 5005
     volumes:
       - ../lostcities-matches:/matches
       - ../lostcities-common:/lostcities-common
@@ -69,10 +71,6 @@ services:
       - 5432
     ports:
       - "5431:5432"
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
   kafka:
     image: wurstmeister/kafka
     ports:
@@ -80,15 +78,5 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_CREATE_TOPICS: "create-game-topic:1:1" #,command-job-topic:1:1,game-change-notification-topic:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-
-#  lostcities-command-processor:
-#    build:
-#      context: ../lost-cities-command-processor
-#    command: bash -c "chmod 777 ./gradlew && ./gradlew bootRun"
-#    volumes:
-#      - ../lost-cities-command-processor:/lost-cities-command-processor
-#      - ../lostcities-common:/lostcities-common

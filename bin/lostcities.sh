@@ -27,7 +27,7 @@ function help() {
    echo " "
    echo "up "
    echo "down "
-
+   echo "build "
    echo "publishCommon "
    echo "cleanJava "
    echo "cleanDocker "
