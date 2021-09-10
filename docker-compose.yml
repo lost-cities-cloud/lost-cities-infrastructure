@@ -28,6 +28,8 @@ services:
       GRADLE_USER_HOME: /var/lib/gradle
       GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build
       SPRING_PROFILES_ACTIVE: ${PROFILE}
+    ports:
+      - "5007:5005"
     volumes:
       - ../lostcities-accounts:/accounts
       - ../lostcities-common:/lostcities-common
@@ -38,11 +40,9 @@ services:
       context: ../lostcities-matches
     working_dir: /matches
     environment:
-      GRADLE_USER_HOME: /var/lib/gradle
-      GRADLE_OPTS: -Dorg.gradle.project.buildDir=/tmp/gradle-build -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
       SPRING_PROFILES_ACTIVE: ${PROFILE}
-    expose:
-      - 5005
+    ports:
+      - "5006:5005"
     volumes:
       - ../lostcities-matches:/matches
       - ../lostcities-common:/lostcities-common
@@ -59,6 +59,8 @@ services:
       PGDATA: /var/lib/postgresql/data/accounts
     ports:
       - "5432:5432"
+    expose:
+      - 5432
   matches-database:
     image: postgres
     restart: always
@@ -67,14 +69,14 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
       PGDATA: /var/lib/postgresql/data/accounts
-    expose:
-      - 5432
     ports:
       - "5431:5432"
+    expose:
+      - 5432
   kafka:
     image: wurstmeister/kafka
-    ports:
-      - "9092:9092"
+    expose:
+      - 9092
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_CREATE_TOPICS: "create-game-topic:1:1" #,command-job-topic:1:1,game-change-notification-topic:1:1"

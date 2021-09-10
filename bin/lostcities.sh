@@ -28,6 +28,8 @@ function help() {
    echo "up "
    echo "down "
    echo "build "
+   echo "restart "
+   echo ""
    echo "publishCommon "
    echo "cleanJava "
    echo "cleanDocker "
@@ -43,6 +45,11 @@ function up() {
 function down() {
   sudo docker-compose --env-file environments/.env.${ENV} down
 }
+
+function restart() {
+  sudo docker-compose --env-file environments/.env.${ENV} restart
+}
+
 
 function build() {
   sudo docker-compose --env-file environments/.env.${ENV} build --parallel \
@@ -112,11 +119,13 @@ for var in "$@"; do
       (up) up;;
       (down) down;;
       (build) build;;
+      (restart) restart;;
       (publishCommon) publishCommon;;
       (cleanJava) cleanJava;;
       (cleanDocker) cleanDocker;;
       (cleanDatabases) cleanDatabases;;
       (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
       (cloneRepos) cloneRepos;;
+      (*)
     esac
 done
