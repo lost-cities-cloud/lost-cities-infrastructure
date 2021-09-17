@@ -29,46 +29,56 @@ function help() {
    echo "down "
    echo "build "
    echo "restart "
+   echo "restartJavaApps"
    echo ""
    echo "publishCommon "
    echo "cleanJava "
    echo "cleanDocker "
    echo "cleanDatabases "
    echo "cleanAll "
+   echo "cleanAllDocker "
    exit
 }
 
 function up() {
-  sudo docker-compose --env-file "environments/.env.${ENV}" up
+  docker-compose --env-file "environments/.env.${ENV}" up
 }
 
 function down() {
-  sudo docker-compose --env-file environments/.env.${ENV} down
+  docker-compose --env-file environments/.env.${ENV} down
 }
 
 function restart() {
-  sudo docker-compose --env-file environments/.env.${ENV} restart
+  docker-compose --env-file environments/.env.${ENV} restart
+}
+
+function restartJava() {
+  docker-compose --env-file environments/.env.${ENV} restart matches
 }
 
 
 function build() {
-  sudo docker-compose --env-file environments/.env.${ENV} build --parallel \
+  docker-compose --env-file environments/.env.${ENV} build --parallel \
     --build-arg actor="${LOCAL_GITHUB_ACTOR}" \
     --build-arg token="${LOCAL_GITHUB_TOKEN}"
 }
 
 function cleanDocker() {
-  docker system prune -a
+  docker-compose rm -f -v
+}
+
+function cleanAllDocker() {
+  docker system prune -a -f
 }
 
 function cleanJava() {
   clean_command="./gradlew clean; rm -rf .gradle"
-  sudo bash -c "cd ../lostcities-accounts/; ${clean_command}"
-  sudo bash -c "cd ../lostcities-matches/; ${clean_command}"
+  bash -c "cd ../lostcities-accounts/; ${clean_command}"
+  bash -c "cd ../lostcities-matches/; ${clean_command}"
 }
 
 function cleanDatabases() {
-  sudo rm -rf /var/lib/postgresql
+  rm -rf /var/lib/postgresql
 }
 
 function publishCommon() {
@@ -76,7 +86,7 @@ function publishCommon() {
 }
 
 function logs() {
-  sudo docker-compose --env-file environments/.env.${ENV} logs
+  docker-compose --env-file environments/.env.${ENV} logs
 }
 
 function cloneRepos() {
@@ -120,11 +130,13 @@ for var in "$@"; do
       (down) down;;
       (build) build;;
       (restart) restart;;
+      (restartJava) restartJava;;
       (publishCommon) publishCommon;;
       (cleanJava) cleanJava;;
       (cleanDocker) cleanDocker;;
       (cleanDatabases) cleanDatabases;;
       (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
+      (cleanAllDocker)cleanAllDocker;;
       (cloneRepos) cloneRepos;;
       (*)
     esac
