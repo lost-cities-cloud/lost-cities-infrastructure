@@ -1,7 +1,7 @@
 FROM nginx:1.21.1
 
 
-COPY conf.d/lostcities.conf /etc/nginx/conf.d/default.conf
+COPY conf.d/*.conf /etc/nginx/conf.d/*.conf
 
 
 CMD nginx -g "daemon off;"
