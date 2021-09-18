@@ -1,38 +1,32 @@
 #!/usr/bin/env bash
 
-WORKSPACE="${HOME}/Workspace"
+. common.properties
+
 LOSTCITIES_BIN_DIR="${WORKSPACE}/lostcities-infrastructure/bin"
 USER_BASHRC="${HOME}/.zshrc"
-
-INFRASTRUCTURE_REPO="git@github.com:lostcities-cloud/lostcities-infrastructure.git"
-COMMON_REPO="git@github.com:lostcities-cloud/lostcities-common.git"
-ACCOUNTS_REPO="git@github.com:lostcities-cloud/lostcities-accounts.git"
-MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
-FRONTEND_REPO="git@github.com:lostcities-cloud/lostcities-frontend.git"
-EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
 
 mkdir -p "$WORKSPACE"
 
 cd "$WORKSPACE" || exit
 
 if [[ ! -d "./lostcities-infrastructure" ]]; then
-  git clone $INFRASTRUCTURE_REPO
+  git clone "$INFRASTRUCTURE_REPO"
 fi
 
 if [[ ! -d "./lostcities-accounts" ]]; then
-  git clone $ACCOUNTS_REPO
+  git clone "$ACCOUNTS_REPO"
 fi
 
 if [[ ! -d "./lostcities-matches" ]]; then
-  git clone $MATCHES_REPO
+  git clone "$MATCHES_REPO"
 fi
 
 if [[ ! -d "./lostcities-frontend" ]]; then
-    git clone $FRONTEND_REPO
+    git clone "$FRONTEND_REPO"
 fi
 
 if [[ ! -d "./lostcities-common" ]]; then
-  git clone $COMMON_REPO
+  git clone "$COMMON_REPO"
 fi
 
 cd ./lostcities-infrastructure || exit

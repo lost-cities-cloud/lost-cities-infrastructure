@@ -2,7 +2,7 @@ Before publishing `lostcities-common` you need to add `GITHUB_ACTOR` and `GITHUB
 
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-infrastructure/master/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-infrastructure/master/bin/install.sh)
 lsc down build up
 ```
 

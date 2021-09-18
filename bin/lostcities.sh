@@ -1,17 +1,7 @@
 #!/usr/bin/env bash
+export ENV="dev"
 
-WORKSPACE_ROOT=~/Workspace
-INFRASTRUCTURE_ROOT=${WORKSPACE_ROOT}/lostcities-infrastructure
-
-INFRASTRUCTURE_REPO="git@github.com:lostcities-cloud/lostcities-infrastructure.git"
-COMMON_REPO="git@github.com:lostcities-cloud/lostcities-common.git"
-ACCOUNTS_REPO="git@github.com:lostcities-cloud/lostcities-accounts.git"
-MATCHES_REPO="git@github.com:lostcities-cloud/lostcities-matches.git"
-FRONTEND_REPO="git@github.com:lostcities-cloud/lostcities-frontend.git"
-EXPERIENCE_REPO="git@github.com:lostcities-cloud/lostcities-web-experience.git"
-ENV="dev"
-LOCAL_GITHUB_ACTOR=${GITHUB_ACTOR}
-LOCAL_GITHUB_TOKEN=${GITHUB_TOKEN}
+. common.properties
 
 workspaceRootError="Unable to find WORKSPACE_ROOT"
 
@@ -40,27 +30,12 @@ function help() {
    exit
 }
 
-function up() {
-  docker-compose --env-file "environments/.env.${ENV}" up
-}
-
-function down() {
-  docker-compose --env-file environments/.env.${ENV} down
-}
-
 function restart() {
   docker-compose --env-file environments/.env.${ENV} restart
 }
 
 function restartJava() {
   docker-compose --env-file environments/.env.${ENV} restart matches
-}
-
-
-function build() {
-  docker-compose --env-file environments/.env.${ENV} build --parallel \
-    --build-arg actor="${LOCAL_GITHUB_ACTOR}" \
-    --build-arg token="${LOCAL_GITHUB_TOKEN}"
 }
 
 function cleanDocker() {
@@ -126,9 +101,11 @@ cd ${INFRASTRUCTURE_ROOT} || exit
 for var in "$@"; do
 
     case "$var" in
-      (up) up;;
-      (down) down;;
-      (build) build;;
+      (up) docker-compose --env-file "environments/.env.${ENV}" up;;
+      (down) shift; docker-compose --env-file "environments/.env.${ENV}" down;;
+      (start) shift; docker-compose start "$@";;
+      (stop) shift; docker-compose stop "$@";;
+      (build) shift; . "$BIN_DIR/build.sh" "$@";;
       (restart) restart;;
       (restartJava) restartJava;;
       (publishCommon) publishCommon;;
