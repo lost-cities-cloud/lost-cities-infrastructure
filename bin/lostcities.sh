@@ -34,8 +34,42 @@ function restart() {
   docker-compose --env-file environments/.env.${ENV} restart
 }
 
+function cleanRestart() {
+  down
+  cleanAllDocker
+  build
+  up
+}
+
+function assemble() {
+  rm -rf ~/.gradle/
+  bash -c "cd ../lostcities-accounts/; ./gradlew clean assemble"
+  bash -c "cd ../lostcities-matches/; ./gradlew assemble assemble"
+}
+
+function build() {
+  . "$BIN_DIR/build.sh" "$@"
+}
+
+function down() {
+  docker-compose down
+}
+
+function up() {
+  docker-compose --env-file "environments/.env.${ENV}" up
+}
+
+function start() {
+  docker-compose --env-file "environments/.env.${ENV}" start "$@"
+}
+
+function stop() {
+  docker-compose --env-file "environments/.env.${ENV}" stop "$@"
+}
+
+
 function restartJava() {
-  docker-compose --env-file environments/.env.${ENV} restart matches
+  docker-compose --env-file environments/.env.${ENV} restart matches accounts
 }
 
 function cleanDocker() {
@@ -98,23 +132,25 @@ done
 
 cd ${INFRASTRUCTURE_ROOT} || exit
 
-for var in "$@"; do
 
-    case "$var" in
-      (up) docker-compose --env-file "environments/.env.${ENV}" up;;
-      (down) shift; docker-compose --env-file "environments/.env.${ENV}" down;;
-      (start) shift; docker-compose start "$@";;
-      (stop) shift; docker-compose stop "$@";;
-      (build) shift; . "$BIN_DIR/build.sh" "$@";;
-      (restart) restart;;
-      (restartJava) restartJava;;
-      (publishCommon) publishCommon;;
-      (cleanJava) cleanJava;;
-      (cleanDocker) cleanDocker;;
-      (cleanDatabases) cleanDatabases;;
-      (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
-      (cleanAllDocker)cleanAllDocker;;
-      (cloneRepos) cloneRepos;;
-      (*)
-    esac
-done
+
+case "$1" in
+  (up) up;;
+  (down) down;;
+  (start) shift; start "$@";;
+  (stop) shift; stop "$@";;
+  (build) shift; build "$@";;
+  (restart) restart;;
+  (assemble) assemble;;
+  (cleanRestart) cleanRestart;;
+  (restartJava) restartJava;;
+  (publishCommon) publishCommon;;
+  (cleanJava) cleanJava;;
+  (cleanDocker) cleanDocker;;
+  (cleanDatabases) cleanDatabases;;
+  (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
+  (cleanAllDocker)cleanAllDocker;;
+  (cloneRepos) cloneRepos;;
+  (*)
+esac
+

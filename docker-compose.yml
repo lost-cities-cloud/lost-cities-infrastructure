@@ -32,7 +32,7 @@ services:
       SPRING_PROFILES_ACTIVE: ${PROFILE}
     volumes:
       - ../lostcities-accounts:/accounts
-      - ../lostcities-common:/lostcities-common
+      - /var/lib/gradle/accounts:/accounts/.gradle
     depends_on:
       - accounts-database
     networks:
@@ -58,7 +58,7 @@ services:
       SPRING_PROFILES_ACTIVE: ${PROFILE}
     volumes:
       - ../lostcities-matches:/matches
-      - ../lostcities-common:/lostcities-common
+      - /var/lib/gradle/matches:/matches/.gradle
     depends_on:
       - accounts-database
     networks:

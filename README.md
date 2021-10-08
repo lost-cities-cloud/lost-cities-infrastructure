@@ -7,12 +7,16 @@ lsc down build up
 ```
 
 * Development Environment
-  * [ ] Expose debugging locally
+  * [x] Expose debugging locally
+  * [ ] Add Jib
 * Production
+  * [ ] Create a container registry in azure (https://azure.microsoft.com/en-us/pricing/details/container-registry/)
   * [ ] Create Build Pack images for java
   * [ ] Figure out build strategy for Vue  
 
 * Authentication
+  * [ ] Move to OAuth + JWT
+  * [ ] Fix roles and authorities
   * [x] Support JWT on backend
   * [x] Create front end for registration
   * [x] Create front end for login
