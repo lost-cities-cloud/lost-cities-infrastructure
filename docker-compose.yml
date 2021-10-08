@@ -12,6 +12,7 @@ services:
     depends_on:
       - accounts
       - matches
+      - gamestate
       - frontend
     networks:
       lostcities-network:
@@ -71,24 +72,49 @@ services:
       POSTGRES_USER: matches
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
-      PGDATA: /var/lib/postgresql/data/accounts
+      PGDATA: /var/lib/postgresql/data/matches
     expose:
       - 5432
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.25
-#  rabbitmq:
-#    image: rabbitmq:3-management-alpine
-#    container_name: 'rabbitmq'
-#    export:
-#      - 5672
-#      - 15672
-#    volumes:
-#      - /var/lib/rabbitmq/data/:/var/lib/rabbitmq/
-#      - /var/lib/rabbitmq/log/:/var/log/rabbitmq
-#    networks:
-#      lostcities-network:
-#        ipv4_address: 172.20.0.50
+  gamestate:
+    build:
+      context: ../lostcities-gamestate
+    environment:
+      SPRING_PROFILES_ACTIVE: ${PROFILE}
+    volumes:
+      - ../lostcities-gamestate:/gamestate
+      - /var/lib/gradle/gamestate:/gamestate/.gradle
+    depends_on:
+      - gamestate-database
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.30
+  gamestate-database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: gamestate
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: lostcities-gamestate
+      PGDATA: /var/lib/postgresql/data/gamestate
+    expose:
+      - 5432
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.35
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    expose:
+      - 5672
+      - 15672
+    #volumes:
+    #  - /var/lib/rabbitmq/data/:/var/lib/rabbitmq/
+    #  - /var/lib/rabbitmq/log/:/var/log/rabbitmq/
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.60
 networks:
   lostcities-network:
     ipam:
