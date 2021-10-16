@@ -7,6 +7,7 @@ services:
       - NGINX_PORT=80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/control:/www/data
     ports:
       - "80:80"
     depends_on:
@@ -86,24 +87,9 @@ services:
     volumes:
       - ../lostcities-gamestate:/gamestate
       - /var/lib/gradle/gamestate:/gamestate/.gradle
-    depends_on:
-      - gamestate-database
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.30
-  gamestate-database:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: gamestate
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-gamestate
-      PGDATA: /var/lib/postgresql/data/gamestate
-    expose:
-      - 5432
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.35
   rabbitmq:
     image: rabbitmq:3-management-alpine
     expose:
@@ -115,6 +101,22 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.60
+  redis:
+    image: redislabs/redismod
+    ports:
+      - 6379:6379
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.61
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8001:8001'
+    # volumes:
+    #   - ${APPLICATION_DATA_DIR}/redisinsight:/db
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.62
 networks:
   lostcities-network:
     ipam:

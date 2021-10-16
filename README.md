@@ -6,15 +6,8 @@ bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-inf
 lsc down build up
 ```
 
-* Development Environment
-  * [x] Expose debugging locally
-  * [ ] Add Jib
-* Production
-  * [ ] Create a container registry in azure (https://azure.microsoft.com/en-us/pricing/details/container-registry/)
-  * [ ] Create Build Pack images for java
-  * [ ] Figure out build strategy for Vue  
-
-* Authentication
+* Accounts
+  * [ ] Fix registration
   * [ ] Move to OAuth + JWT
   * [ ] Fix roles and authorities
   * [x] Support JWT on backend
@@ -42,3 +35,11 @@ lsc down build up
   * [ ] Draw hand
   * [ ] Draw deck
   * [ ] Draw my play area
+
+* Development Environment
+  * [x] Expose debugging locally
+  * [ ] Add Jib
+* Production
+  * [ ] Create a container registry in azure (https://azure.microsoft.com/en-us/pricing/details/container-registry/)
+  * [ ] Create Build Pack images for java
+  * [ ] Figure out build strategy for Vue  
