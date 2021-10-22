@@ -135,6 +135,7 @@ cd ${INFRASTRUCTURE_ROOT} || exit
 
 
 case "$1" in
+  (help) help;;
   (up) up;;
   (down) down;;
   (start) shift; start "$@";;
