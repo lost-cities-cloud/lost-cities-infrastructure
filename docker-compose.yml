@@ -1,23 +1,5 @@
 version: '2'
 services:
-  nginx:
-    build:
-      context: ./nginx
-    environment:
-      - NGINX_PORT=80
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/control:/www/data
-    ports:
-      - "80:80"
-    depends_on:
-      - accounts
-      - matches
-      - gamestate
-      - frontend
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.2
   frontend:
     container_name: frontend
     build:
