@@ -152,6 +152,6 @@ case "$1" in
   (cleanAll) cleanJava && cleanDocker && cleanDatabases;;
   (cleanAllDocker)cleanAllDocker;;
   (cloneRepos) cloneRepos;;
-  (*)
+  (*) help;;
 esac
 
