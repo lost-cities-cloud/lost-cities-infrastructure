@@ -72,6 +72,18 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.30
+
+  player-events:
+    build:
+      context: ../lostcities-player-events
+    environment:
+      SPRING_PROFILES_ACTIVE: ${PROFILE}
+    volumes:
+      - ../lostcities-player-events:/player-events
+      - /var/lib/gradle/player-events:/player-events/.gradle
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.35
   rabbitmq:
     image: rabbitmq:3-management-alpine
     expose:

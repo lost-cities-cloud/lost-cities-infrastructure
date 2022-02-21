@@ -45,6 +45,8 @@ function assemble() {
   rm -rf ~/.gradle/
   bash -c "cd ../lostcities-accounts/; ./gradlew clean assemble"
   bash -c "cd ../lostcities-matches/; ./gradlew assemble assemble"
+  bash -c "cd ../lostcities-gamestate/; ./gradlew assemble assemble"
+  bash -c "cd ../lostcities-player-events/; ./gradlew assemble assemble"
 }
 
 function build() {
@@ -84,6 +86,8 @@ function cleanJava() {
   clean_command="./gradlew clean; rm -rf .gradle"
   bash -c "cd ../lostcities-accounts/; ${clean_command}"
   bash -c "cd ../lostcities-matches/; ${clean_command}"
+  bash -c "cd ../lostcities-gamestate/; ${clean_command}"
+  bash -c "cd ../lostcities-player-events/; ${clean_command}"
 }
 
 function cleanDatabases() {
@@ -112,6 +116,15 @@ function cloneRepos() {
   if [[ ! -d "./lostcities-matches" ]]; then
     git clone $MATCHES_REPO
   fi
+
+  if [[ ! -d "./lostcities-gamestate" ]]; then
+      git clone $GAMESTATE_REPO
+  fi
+
+  if [[ ! -d "./lostcities-player-events" ]]; then
+      git clone $PLAYER_EVENTS_REPO
+  fi
+
 
   if [[ ! -d "./lostcities-frontend" ]]; then
       git clone $FRONTEND_REPO
