@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. common.properties
+source common.properties
 
 cd "$INFRASTRUCTURE_ROOT" || exit
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. common.properties
+source common.properties
 
 LOSTCITIES_BIN_DIR="${WORKSPACE}/lostcities-infrastructure/bin"
 USER_BASHRC="${HOME}/.zshrc"
