@@ -1,7 +1,6 @@
 version: '2'
 services:
   frontend:
-    container_name: frontend
     build:
       context: ../lostcities-frontend
     volumes:
@@ -9,14 +8,21 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.5
+  config-server:
+    image: hyness/spring-cloud-config-server:jdk17
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/lostcities-cloud/lostcities-config
+    expose:
+      - 8888
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.6
   accounts:
     image: dereknelson.io/library/lostcities-accounts
     environment:
       SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ../lostcities-accounts:/accounts
-      - /var/lib/gradle/accounts:/accounts/.gradle
     depends_on:
+      - spring-cloud-config-server
       - accounts-database
     networks:
       lostcities-network:
@@ -28,9 +34,10 @@ services:
       POSTGRES_USER: accounts
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-accounts
-      PGDATA: /var/lib/postgresql/data/accounts
     expose:
       - 5432
+    volumes:
+      - accounts_postgres_data:/var/lib/postgresql/data/
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.15
@@ -38,11 +45,10 @@ services:
     image: dereknelson.io/library/lostcities-matches
     environment:
       SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ../lostcities-matches:/matches
-      - /var/lib/gradle/matches:/matches/.gradle
     depends_on:
+      - spring-cloud-config-server
       - accounts-database
+      - rabbitmq
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.20
@@ -53,7 +59,8 @@ services:
       POSTGRES_USER: matches
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-matches
-      PGDATA: /var/lib/postgresql/data/matches
+    volumes:
+      - matches_postgres_data:/var/lib/postgresql/data/
     expose:
       - 5432
     networks:
@@ -63,9 +70,10 @@ services:
     image: dereknelson.io/library/lostcities-gamestate
     environment:
       SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ../lostcities-gamestate:/gamestate
-      - /var/lib/gradle/gamestate:/gamestate/.gradle
+    depends_on:
+      - spring-cloud-config-server
+      - redis
+      - rabbitmq
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.30
@@ -74,9 +82,9 @@ services:
     image: dereknelson.io/library/lostcities-player-events
     environment:
       SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ../lostcities-player-events:/player-events
-      - /var/lib/gradle/player-events:/player-events/.gradle
+    depends_on:
+      - spring-cloud-config-server
+      - rabbitmq
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.35
@@ -85,8 +93,8 @@ services:
     expose:
       - 5672
       - 15672
-    #volumes:
-    #  - /var/lib/rabbitmq/data/:/var/lib/rabbitmq/
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq/
     #  - /var/lib/rabbitmq/log/:/var/log/rabbitmq/
     networks:
       lostcities-network:
@@ -95,6 +103,8 @@ services:
     image: redislabs/redismod
     ports:
       - 6379:6379
+    volumes:
+      - redis_data:/data
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.61
@@ -107,6 +117,13 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.62
+
+volumes:
+  matches_postgres_data:
+  accounts_postgres_data:
+  redis_data:
+  rabbit_data:
+
 networks:
   lostcities-network:
     ipam:
