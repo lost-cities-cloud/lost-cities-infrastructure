@@ -8,15 +8,15 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.5
-  config-server:
-    image: hyness/spring-cloud-config-server:jdk17
-    environment:
-      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/lostcities-cloud/lostcities-config
-    expose:
-      - 8888
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.6
+  #config-server:
+  #  image: hyness/spring-cloud-config-server:jdk17
+  #  environment:
+  #    SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/lostcities-cloud/lostcities-config
+  #  expose:
+  #    - 8888
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.6
   accounts:
     image: dereknelson.io/library/lostcities-accounts
     environment:
