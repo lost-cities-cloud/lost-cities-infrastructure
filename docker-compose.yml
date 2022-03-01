@@ -1,5 +1,134 @@
 version: '3.8'
 
+services:
+  frontend:
+    build:
+      context: ../lostcities-frontend
+    volumes:
+      - ../lostcities-frontend:/usr/src/lostcities
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.5
+
+  accounts:
+    container_name: accounts
+    image: dereknelson.io/library/lostcities-accounts
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    depends_on:
+    #  - spring-cloud-config-server
+      - accounts-database
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.10
+
+  accounts-database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: accounts
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: lostcities-accounts
+    expose:
+      - 5432
+    volumes:
+      - accounts_postgres_data:/var/lib/postgresql/data/
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.15
+
+  matches:
+    container_name: matches
+    image: dereknelson.io/library/lostcities-matches
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+    #  - spring-cloud-config-server
+      - accounts-database
+      - rabbitmq
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.20
+
+  matches-database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: matches
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: lostcities-matches
+    volumes:
+      - matches_postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.25
+
+  gamestate:
+    container_name: gamestate
+    image: dereknelson.io/library/lostcities-gamestate
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+    #  - spring-cloud-config-server
+      - redis
+      - rabbitmq
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.30
+
+  player-events:
+    container_name: player-events
+    image: dereknelson.io/library/lostcities-player-events
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+    #  - spring-cloud-config-server
+      - rabbitmq
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.35
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq/
+    #  - /var/lib/rabbitmq/log/:/var/log/rabbitmq/
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.60
+
+  redis:
+    image: redislabs/redismod
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    working_dir: /data
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.61
+
 volumes:
   grafana-storage:
     external: true
@@ -22,141 +151,3 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/24
-
-services:
-  frontend:
-    build:
-      context: ../lostcities-frontend
-    volumes:
-      - ../lostcities-frontend:/usr/src/lostcities
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.5
-  #config-server:
-  #  image: hyness/spring-cloud-config-server:jdk17
-  #  environment:
-  #    SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/lostcities-cloud/lostcities-config
-  #  expose:
-  #    - 8888
-  #  networks:
-  #    lostcities-network:
-  #      ipv4_address: 172.20.0.6
-  accounts:
-    image: dereknelson.io/library/lostcities-accounts
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-    #  - spring-cloud-config-server
-      - accounts-database
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.10
-  accounts-database:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: accounts
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-accounts
-    expose:
-      - 5432
-    volumes:
-      - accounts_postgres_data:/var/lib/postgresql/data/
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.15
-  matches:
-    image: dereknelson.io/library/lostcities-matches
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-    #  - spring-cloud-config-server
-      - accounts-database
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.20
-  matches-database:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: matches
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: lostcities-matches
-    volumes:
-      - matches_postgres_data:/var/lib/postgresql/data/
-    expose:
-      - 5432
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.25
-  gamestate:
-    image: dereknelson.io/library/lostcities-gamestate
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-    #  - spring-cloud-config-server
-      - redis
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.30
-
-  player-events:
-    image: dereknelson.io/library/lostcities-player-events
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-    #  - spring-cloud-config-server
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.35
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    expose:
-      - 5672
-      - 15672
-    volumes:
-      - rabbit_data:/var/lib/rabbitmq/
-    #  - /var/lib/rabbitmq/log/:/var/log/rabbitmq/
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.60
-  redis:
-    image: redislabs/redismod
-    ports:
-      - 6379:6379
-    volumes:
-      - redis_data:/data
-    working_dir: /data
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.61
-  redisinsight:
-    image: redislabs/redisinsight:latest
-    ports:
-      - '8001:8001'
-    # volumes:
-    #   - ${APPLICATION_DATA_DIR}/redisinsight:/db
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.62
-  prometheus:
-    image: prom/prometheus:v2.31.1
-    command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-  grafana:
-    image: grafana/grafana:8.2.3
-    ports:
-      - "3000:3000"
-    volumes:
-      - grafana-storage:/var/lib/grafana
-    user: '104'
-    links:
-      - prometheus

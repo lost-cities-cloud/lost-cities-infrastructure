@@ -7,7 +7,7 @@ cd "$WORKSPACE_ROOT" || exit
 function gradleBuild() {
   echo "Building $1"
   cd "$1" || exit
-  time ./gradlew clean bootBuildImage 1> /dev/null &
+  time ./gradlew clean assemble bootBuildImage 1> /dev/null &
 }
 
 function dockerStop() {
@@ -17,7 +17,7 @@ function dockerStop() {
 
 function dockerStart() {
   cd "$INFRASTRUCTURE_ROOT" || exit
-  docker-compose up --build accounts gamestate matches player-events
+  docker-compose up --build accounts gamestate matches player-events --detach
 }
 
 dockerStop
@@ -28,4 +28,5 @@ done
 wait
 
 dockerStart
+
 echo "Completed"
