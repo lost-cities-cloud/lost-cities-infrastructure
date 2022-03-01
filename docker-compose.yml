@@ -1,4 +1,28 @@
-version: '2'
+version: '3.8'
+
+volumes:
+  grafana-storage:
+    external: true
+    name: grafana-storage
+  matches_postgres_data:
+    external: true
+    name: matches_postgres_data
+  accounts_postgres_data:
+    external: true
+    name: accounts_postgres_data
+  redis_data:
+    external: true
+    name: redis_data
+  rabbit_data:
+    external: true
+    name: rabbit_data
+
+networks:
+  lostcities-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
 services:
   frontend:
     build:
@@ -22,7 +46,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
-      - spring-cloud-config-server
+    #  - spring-cloud-config-server
       - accounts-database
     networks:
       lostcities-network:
@@ -46,7 +70,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
-      - spring-cloud-config-server
+    #  - spring-cloud-config-server
       - accounts-database
       - rabbitmq
     networks:
@@ -71,7 +95,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
-      - spring-cloud-config-server
+    #  - spring-cloud-config-server
       - redis
       - rabbitmq
     networks:
@@ -83,7 +107,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
-      - spring-cloud-config-server
+    #  - spring-cloud-config-server
       - rabbitmq
     networks:
       lostcities-network:
@@ -105,6 +129,7 @@ services:
       - 6379:6379
     volumes:
       - redis_data:/data
+    working_dir: /data
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.61
@@ -135,17 +160,3 @@ services:
     user: '104'
     links:
       - prometheus
-
-
-volumes:
-  grafana-storage:
-  matches_postgres_data:
-  accounts_postgres_data:
-  redis_data:
-  rabbit_data:
-
-networks:
-  lostcities-network:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
