@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=/usr/bin/docker-compose -f /home/derek/Workspace/lostcities-infrastructure/monitoring/docker-compose.yml
+Name=lost-cities-monitoring
+Comment=Lost cities monitoringcd 
+Type=Application
+Icon=utilities-system-monitor
+Terminal=false
