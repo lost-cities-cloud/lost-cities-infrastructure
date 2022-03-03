@@ -43,3 +43,23 @@ lsc down build up
   * [ ] Create a container registry in azure (https://azure.microsoft.com/en-us/pricing/details/container-registry/)
   * [ ] Create Build Pack images for java
   * [ ] Figure out build strategy for Vue  
+
+Google Secret Manager:
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/secret_manager_secret
+
+App Servers
+https://registry.terraform.io/providers/aliyun/alicloud/latest/docs
+
+RabbitMQ Cloudamqp:
+https://registry.terraform.io/providers/cloudamqp/cloudamqp/latest/docs
+
+Redis Upstash:
+https://registry.terraform.io/providers/upstash/upstash/latest
+
+Redis Redislabs:
+https://registry.terraform.io/modules/TobyHFerguson/Redislabs-Cloud-Account-Resources/aws/latest
+
+Postgres ElephantSql:
+https://www.elephantsql.com/blog/elephantsql_terraform_plugin.html
+
+
