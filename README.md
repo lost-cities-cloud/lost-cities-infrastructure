@@ -44,6 +44,13 @@ lsc down build up
   * [ ] Create Build Pack images for java
   * [ ] Figure out build strategy for Vue  
 
+
+```docker login ghcr.io -u USERNAME --password-stdi```
+
+Container Image 
+https://www.flatcar.org/docs/latest/installing/cloud/digitalocean/#docslatest
+https://rancher.com/docs/os/v1.x/en/support/
+
 Google Secret Manager:
 https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/secret_manager_secret
 
