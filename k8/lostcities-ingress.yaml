@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lostcities-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+
+
+          - path: /api/accounts
+            pathType: Prefix
+            backend:
+              service:
+                name: accounts
+                port:
+                  number: 8080
+          - path: /api/matches
+            pathType: Prefix
+            backend:
+              service:
+                name: matches
+                port:
+                  number: 8080
+          - path: /api/gamestate
+            pathType: Prefix
+            backend:
+              service:
+                name: gamestate
+                port:
+                  number: 8080
+          - path: /api/player-events
+            pathType: Prefix
+            backend:
+              service:
+                name: player-events
+                port:
+                  number: 8080
