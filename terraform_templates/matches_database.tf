@@ -1,5 +1,3 @@
-provider "elephantsql" {}
-
 variable "database-name" {
   type = string
 }

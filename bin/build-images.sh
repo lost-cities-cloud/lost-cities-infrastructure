@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-source common.properties
+cd "$LOSTCITIES_INFRASTRUCTURE_ROOT"
 
-cd "$WORKSPACE_ROOT" || exit
+source "./bin/common.properties"
 
 function gradleBuild() {
   echo "Building $1"
   cd "$1" || exit
-  time ./gradlew clean assemble bootBuildImage 1> /dev/null &
+  time ./gradlew clean bootBuildImage --parallel 1> /dev/null &
 }
 
 function dockerStop() {
@@ -20,13 +20,13 @@ function dockerStart() {
   docker-compose up --build accounts gamestate matches player-events --detach
 }
 
-dockerStop
+#dockerStop
 
 for project_dir in $GRADLE_PROJECTS; do
   gradleBuild "$WORKSPACE_ROOT/${project_dir}"
 done
 wait
 
-dockerStart
+#dockerStart
 
 echo "Completed"

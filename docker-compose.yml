@@ -13,8 +13,13 @@ services:
   accounts:
     container_name: accounts
     image: dereknelson.io/library/lostcities-accounts
+    volumes:
+      - ~/.gcreds:/home/cnb/.gcreds
     environment:
       SPRING_PROFILES_ACTIVE: dev
+      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+      DATABASE_URL: accounts-database
+      BPL_JMX_ENABLED: true
     logging:
       driver: "json-file"
       options:
@@ -22,6 +27,8 @@ services:
     depends_on:
     #  - spring-cloud-config-server
       - accounts-database
+    expose:
+      - 5000
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.10
@@ -33,6 +40,7 @@ services:
       POSTGRES_USER: accounts
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lostcities-accounts
+      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
     expose:
       - 5432
     volumes:
@@ -44,12 +52,18 @@ services:
   matches:
     container_name: matches
     image: dereknelson.io/library/lostcities-matches
+    volumes:
+      - ~/.gcreds:/home/cnb/.gcreds
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     environment:
       SPRING_PROFILES_ACTIVE: dev
+      BPL_JMX_ENABLED: true
+      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+    expose:
+      - 5000
     depends_on:
     #  - spring-cloud-config-server
       - accounts-database
@@ -76,12 +90,18 @@ services:
   gamestate:
     container_name: gamestate
     image: dereknelson.io/library/lostcities-gamestate
+    volumes:
+      - ~/.gcreds:/home/cnb/.gcreds
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
       SPRING_PROFILES_ACTIVE: dev
+      BPL_JMX_ENABLED: true
+    expose:
+      - 5000
     depends_on:
     #  - spring-cloud-config-server
       - redis
@@ -93,12 +113,18 @@ services:
   player-events:
     container_name: player-events
     image: dereknelson.io/library/lostcities-player-events
+    volumes:
+      - ~/.gcreds:/home/cnb/.gcreds
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
       SPRING_PROFILES_ACTIVE: dev
+      BPL_JMX_ENABLED: true
+    expose:
+      - 5000
     depends_on:
     #  - spring-cloud-config-server
       - rabbitmq

@@ -21,9 +21,8 @@ resource "digitalocean_droplet" "matches_host" {
       "export SPRING_PROFILES_ACTIVE=dev",
       "export GOOGLE_APPLICATION_CREDENTIALS=~/.gcreds",
       "export SECRET_MANAGER=true",
-      "echo ${data.vault_generic_secret.vault_secrets.data["google_key"]} > ~/.gcreds",
-      "docker pull ghcr.io/lostcities-cloud/lostcities-matches:latest",
-      "docker run -e JAVA_OPTS=\"-XX:ActiveProcessorCount=1 -Xss256K\" -e GOOGLE_APPLICATION_CREDENTIALS=\"/home/cnb/.gcreds\" -it --memory=\"1G\" -v /root/.gcreds:/home/cnb/.gcreds ghcr.io/lostcities-cloud/lostcities-matches"
+      "cat > ~/.gcreds <<EOL\n ${data.vault_generic_secret.vault_secrets.data["google_key"]} \nEOL",
+      "docker run -d -e JAVA_OPTS=\"-XX:ActiveProcessorCount=1 -Xmx725M -Xss256K\" -e GOOGLE_APPLICATION_CREDENTIALS=\"/home/cnb/.gcreds\" -it --memory=\"1G\" -v /root/.gcreds:/home/cnb/.gcreds ghcr.io/lostcities-cloud/lostcities-matches:latest"
     ]
   }
 }

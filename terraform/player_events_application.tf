@@ -21,9 +21,8 @@ resource "digitalocean_droplet" "player_events_host" {
       "export SPRING_PROFILES_ACTIVE=dev",
       "export SECRET_MANAGER=true",
       "export GOOGLE_APPLICATION_CREDENTIALS=/root/.gcreds",
-      "echo ${data.vault_generic_secret.vault_secrets.data["google_key"]} > /root/.gcreds",
-      "docker pull ghcr.io/lostcities-cloud/lostcities-player-events",
-      "docker run -e JAVA_OPTS=\"-XX:ActiveProcessorCount=1 -Xss256K\" -e GOOGLE_APPLICATION_CREDENTIALS=\"/home/cnb/.gcreds\" -it --memory=\"1G\" -v /root/.gcreds:/home/cnb/.gcreds ghcr.io/lostcities-cloud/lostcities-player-events"
+      "cat > ~/.gcreds <<EOL\n ${data.vault_generic_secret.vault_secrets.data["google_key"]} \nEOL",
+      "docker run -d -e JAVA_OPTS=\"-XX:ActiveProcessorCount=1 -Xmx725M -Xss256K\" -e GOOGLE_APPLICATION_CREDENTIALS=\"/home/cnb/.gcreds\" -it --memory=\"1G\" -v /root/.gcreds:/home/cnb/.gcreds ghcr.io/lostcities-cloud/lostcities-player-events:latest"
     ]
   }
 }
@@ -45,6 +44,3 @@ resource "google_secret_manager_secret_version" "player_events_host_url_secret" 
 
   secret_data = digitalocean_droplet.player_events_host.ipv4_address
 }
-
-
-docker run -e JAVA_OPTS="-XX:ActiveProcessorCount=1 -Xss256K" -e GOOGLE_APPLICATION_CREDENTIALS="/home/cnb/.gcreds" -it --memory="1G" -v /root/.gcreds:/home/cnb/.gcreds ghcr.io/lostcities-cloud/lostcities-player-events
