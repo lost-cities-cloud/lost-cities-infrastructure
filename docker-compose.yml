@@ -12,7 +12,7 @@ services:
 
   accounts:
     container_name: accounts
-    image: dereknelson.io/library/lostcities-accounts
+    image: ghcr.io/lostcities-cloud/lostcities-accounts:latest
     volumes:
       - ~/.gcreds:/home/cnb/.gcreds
     environment:
@@ -51,7 +51,7 @@ services:
 
   matches:
     container_name: matches
-    image: dereknelson.io/library/lostcities-matches
+    image: ghcr.io/lostcities-cloud/lostcities-matches:latest
     volumes:
       - ~/.gcreds:/home/cnb/.gcreds
     logging:
@@ -89,7 +89,7 @@ services:
 
   gamestate:
     container_name: gamestate
-    image: dereknelson.io/library/lostcities-gamestate
+    image: ghcr.io/lostcities-cloud/lostcities-gamestate:latest
     volumes:
       - ~/.gcreds:/home/cnb/.gcreds
     logging:
@@ -112,7 +112,7 @@ services:
 
   player-events:
     container_name: player-events
-    image: dereknelson.io/library/lostcities-player-events
+    image: ghcr.io/lostcities-cloud/lostcities-player-events:latest
     volumes:
       - ~/.gcreds:/home/cnb/.gcreds
     logging:
