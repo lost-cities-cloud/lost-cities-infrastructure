@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ../lostcities-frontend
-    volumes:
-      - ../lostcities-frontend:/usr/src/lostcities
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.5
+  #frontend:
+  #  build:
+  #    context: ../lostcities-frontend
+  #  volumes:
+  #    - ../lostcities-frontend:/usr/src/lostcities
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.5
 
   #accounts:
   #  container_name: accounts
