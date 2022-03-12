@@ -10,28 +10,28 @@ services:
       lostcities-network:
         ipv4_address: 172.20.0.5
 
-  accounts:
-    container_name: accounts
-    image: ghcr.io/lostcities-cloud/lostcities-accounts:latest
-    volumes:
-      - ~/.gcreds:/home/cnb/.gcreds
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
-      DATABASE_URL: accounts-database
-      BPL_JMX_ENABLED: true
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-    depends_on:
-    #  - spring-cloud-config-server
-      - accounts-database
-    expose:
-      - 5000
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.10
+  #accounts:
+  #  container_name: accounts
+  #  image: ghcr.io/lostcities-cloud/lostcities-accounts:latest
+  #  volumes:
+  #    - ~/.gcreds:/home/cnb/.gcreds
+  #  environment:
+  #    SPRING_PROFILES_ACTIVE: dev
+  #    GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+  #    DATABASE_URL: accounts-database
+  #    BPL_JMX_ENABLED: true
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  #  depends_on:
+  #  #  - spring-cloud-config-server
+  #    - accounts-database
+  #  expose:
+  #    - 5000
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.10
 
   accounts-database:
     image: postgres
@@ -49,28 +49,28 @@ services:
       lostcities-network:
         ipv4_address: 172.20.0.15
 
-  matches:
-    container_name: matches
-    image: ghcr.io/lostcities-cloud/lostcities-matches:latest
-    volumes:
-      - ~/.gcreds:/home/cnb/.gcreds
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      BPL_JMX_ENABLED: true
-      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
-    expose:
-      - 5000
-    depends_on:
-    #  - spring-cloud-config-server
-      - accounts-database
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.20
+  #matches:
+  #  container_name: matches
+  #  image: ghcr.io/lostcities-cloud/lostcities-matches:latest
+  #  volumes:
+  #    - ~/.gcreds:/home/cnb/.gcreds
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  #  environment:
+  #    SPRING_PROFILES_ACTIVE: dev
+  #    BPL_JMX_ENABLED: true
+  #    GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+  #  expose:
+  #    - 5000
+  #  depends_on:
+  #  #  - spring-cloud-config-server
+  #    - accounts-database
+  #    - rabbitmq
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.20
 
   matches-database:
     image: postgres
@@ -87,50 +87,50 @@ services:
       lostcities-network:
         ipv4_address: 172.20.0.25
 
-  gamestate:
-    container_name: gamestate
-    image: ghcr.io/lostcities-cloud/lostcities-gamestate:latest
-    volumes:
-      - ~/.gcreds:/home/cnb/.gcreds
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
-      SPRING_PROFILES_ACTIVE: dev
-      BPL_JMX_ENABLED: true
-    expose:
-      - 5000
-    depends_on:
-    #  - spring-cloud-config-server
-      - redis
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.30
+  #gamestate:
+  #  container_name: gamestate
+  #  image: ghcr.io/lostcities-cloud/lostcities-gamestate:latest
+  #  volumes:
+  #    - ~/.gcreds:/home/cnb/.gcreds
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  #  environment:
+  #    GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+  #    SPRING_PROFILES_ACTIVE: dev
+  #    BPL_JMX_ENABLED: true
+  #  expose:
+  #    - 5000
+  #  depends_on:
+  #  #  - spring-cloud-config-server
+  #    - redis
+  #    - rabbitmq
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.30
 
-  player-events:
-    container_name: player-events
-    image: ghcr.io/lostcities-cloud/lostcities-player-events:latest
-    volumes:
-      - ~/.gcreds:/home/cnb/.gcreds
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
-      SPRING_PROFILES_ACTIVE: dev
-      BPL_JMX_ENABLED: true
-    expose:
-      - 5000
-    depends_on:
-    #  - spring-cloud-config-server
-      - rabbitmq
-    networks:
-      lostcities-network:
-        ipv4_address: 172.20.0.35
+  #player-events:
+  #  container_name: player-events
+  #  image: ghcr.io/lostcities-cloud/lostcities-player-events:latest
+  #  volumes:
+  #    - ~/.gcreds:/home/cnb/.gcreds
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  #  environment:
+  #    GOOGLE_APPLICATION_CREDENTIALS: /home/cnb/.gcreds
+  #    SPRING_PROFILES_ACTIVE: dev
+  #    BPL_JMX_ENABLED: true
+  #  expose:
+  #    - 5000
+  #  depends_on:
+  #  #  - spring-cloud-config-server
+  #    - rabbitmq
+  #  networks:
+  #    lostcities-network:
+  #      ipv4_address: 172.20.0.35
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -154,6 +154,13 @@ services:
     networks:
       lostcities-network:
         ipv4_address: 172.20.0.61
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - 8001
+    networks:
+      lostcities-network:
+        ipv4_address: 172.20.0.62
 
 volumes:
   grafana-storage:

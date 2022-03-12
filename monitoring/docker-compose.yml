@@ -41,9 +41,6 @@ services:
     user: '104'
     links:
       - prometheus
-  redisinsight:
-    image: redislabs/redisinsight:latest
-    ports:
       - '8001:8001'
     # volumes:
     #   - ${APPLICATION_DATA_DIR}/redisinsight:/db
