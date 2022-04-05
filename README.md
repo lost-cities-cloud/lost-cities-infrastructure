@@ -6,8 +6,20 @@ bash <(curl -s https://raw.githubusercontent.com/lostcities-cloud/lostcities-inf
 lsc down build up
 ```
 
+* Stage environment
+  * [x] Setup Vault 
+  * [x] Add terraform
+  * [x] Adding ansible for setting up services
+  * [x] Add certbot for ssl
+  * [ ] Add Dynamic DNS for nginx
+  * [ ] Add prometheus
+  * [ ] Add promtail
+  * [ ] Add loki
+  * [ ] Consider Grafana in the cloud
+
+
 * Accounts
-  * [ ] Fix registration
+  * [x] Fix registration
   * [ ] Move to OAuth + JWT
   * [ ] Fix roles and authorities
   * [x] Support JWT on backend
@@ -15,16 +27,16 @@ lsc down build up
   * [x] Create front end for login
   * [x] Simple JWT store on frontend
 * Matchmaking
-  * [ ] Write simple manual matchmaking
+  * [x] Write simple manual matchmaking
   * [ ] Smarter automatic matchmaking
   * [ ] Calculate elo on match completion
 * Processing commands
-  * [ ] Command Processor Queue
-  * [ ] Command Processor Listener
-  * [ ] Add game completion Queue
+  * [x] Command Processor Queue
+  * [x] Command Processor Listener
+  * [x] Add game completion Queue
 * Gamestate Service
   * [ ] Recieve gamestate from command processor
-  * [ ] Store in Mongo
+  * [ ] Store in Redis
   * [ ] Expose debug ViewModel
   * [ ] Expose player ViewModel
 

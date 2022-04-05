@@ -7,7 +7,7 @@ source "./bin/common.properties"
 function bootRun() {
   echo "Building $1"
   cd "$1" || exit
-  time ./gradlew bootRun > /dev/null &
+  nohup ./gradlew bootRun > /dev/null & > /dev/null
 }
 
 function dockerStop() {
@@ -25,7 +25,6 @@ function dockerStart() {
 for project_dir in $GRADLE_PROJECTS; do
   bootRun "$WORKSPACE_ROOT/${project_dir}"
 done
-wait
 
 #dockerStart
 

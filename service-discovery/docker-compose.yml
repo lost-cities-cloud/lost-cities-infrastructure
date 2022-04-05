@@ -1,0 +1,46 @@
+version: '3.8'
+
+
+services:
+  consul:
+    image: consul
+    command: "agent -bootstrap=1 -server -ui -client=0.0.0.0 -config-file=/consul/config/server.hcl"
+    network_mode: "host"
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      - 'CONSUL_BIND_INTERFACE=eth0'
+      - 'VAULT_ADDR=https://secret-vault-io.herokuapp.com'
+      - 'VAULT_TOKEN=s.0A55B65R56NivHNuV4fxsgt5'
+      - 'CONSUL_HTTP_TOKEN=4aa04b14-f239-00c2-095d-8d92b8834466'
+    volumes:
+      - "/var/lib/consul:/consul/data"
+      - "/var/lib/consul:/consul/config"
+    ports:
+      - "8500:8500"
+
+    networks:
+      lost-cities-discovery:
+        ipv4_address: 172.21.0.101
+
+  fabio:
+    image: fabiolb/fabio
+    volumes:
+      - ./fabio/fabio.properties:/etc/fabio/fabio.properties
+    command: -registry.consul.addr consul:8500 -registry.consul.token b33bb520-ee21-9897-b223-da969dea60e3
+    links:
+      - consul
+    ports:
+      - "9998:9998" # GUI/management
+      - "9999:9999" # HTTP exposed
+      - "8301:8301"
+    depends_on:
+      - consul
+    networks:
+      lost-cities-discovery:
+        ipv4_address: 172.21.0.102
+networks:
+  lost-cities-discovery:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
+
