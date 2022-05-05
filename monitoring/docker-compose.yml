@@ -29,8 +29,6 @@ services:
   prometheus:
     image: prom/prometheus:v2.31.1
     command: --config.file=/etc/prometheus/prometheus.yml --log.level=info
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -41,9 +39,6 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
-    user: '104'
     links:
       - prometheus
       - '8001:8001'
-    # volumes:
-    #   - ${APPLICATION_DATA_DIR}/redisinsight:/db
