@@ -18,6 +18,10 @@ if [[ ! -d "./lostcities-accounts" ]]; then
   git clone "$ACCOUNTS_REPO"
 fi
 
+if [[ ! -d "./lostcities-player-events" ]]; then
+  git clone "PLAYER_EVENTS_REPO"
+fi
+
 if [[ ! -d "./lostcities-matches" ]]; then
   git clone "$MATCHES_REPO"
 fi
